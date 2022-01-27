@@ -6,7 +6,7 @@ const Comment = mongoose.model(
         description: {
             type: String,
             required: true,
-            maxlength: 100
+            maxlength: 500
         },
         postId: {
             type: String,
