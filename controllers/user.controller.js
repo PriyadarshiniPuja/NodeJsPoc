@@ -60,18 +60,11 @@ exports.signin = (req, res) => {
         if (!passwordIsValid) {
             return res.status(401).send({ message: "Invalid Password!" });
         }
-
-        console.log('user', user.id);
         var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 86400, // 24 hours
         });
-        console.log('token', token, req.session);
-        var tokens = user.token || [];
-
-        user.token = [...user.token, token];
-
+        user.token = [...user.token, { token }];
         user.save();
-        // req.session["token"] = user.token;
         res.status(200).send({
             id: user._id,
             firstName: user.firstName,
@@ -86,25 +79,41 @@ exports.signin = (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        req.session = null;
-        return res.status(200).send({ message: "You've been signed out!" });
+        const user = await User.findById(req.userId);
+        if (user) {
+            const requestToken = req.headers.token;
+            const existingToken = user.token.find((e) => e.token === requestToken);
+            await user.token.remove(existingToken._id);
+            await user.save();
+            return res.status(200).send({ message: "You've been signed out successfully!" });
+        } else {
+            throw new Error("User not found");
+        }
+
     } catch (err) {
-        this.next(err);
+        res.status(401);
+        return res.status(404).send({ message: "User Not found." });
     }
 };
 
 exports.logoutAllDevices = async (req, res) => {
-    console.log('logout ', req);
     try {
-        req.session = null;
-        return res.status(200).send({ message: "You've been signed out!" });
+        const user = await User.findById(req.userId);
+        if (user) {
+            user.token = [];
+            await user.save();
+            return res.status(200).send({ message: "You've been signed out from all devices successfully!" });
+        } else {
+            throw new Error("User not found");
+        }
+
     } catch (err) {
-        this.next(err);
+        res.status(401);
+        return res.status(404).send({ message: "User Not found." });
     }
 };
 
 exports.getUserDetails = async (req, res) => {
-    console.log('req', req.userId);
     const user = await User.findById(req.userId);
     if (user) {
         res.json({
@@ -126,7 +135,6 @@ exports.getUserDetails = async (req, res) => {
 };
 
 exports.updateUserDetails = async (req, res) => {
-    console.log('req', req.userId);
     const user = await User.findById(req.userId);
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;

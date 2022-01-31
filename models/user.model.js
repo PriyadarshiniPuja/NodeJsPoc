@@ -28,9 +28,14 @@ const User = mongoose.model(
             type: String,
             required: true,
         },
-        token: {
-            type: Array
-        }
+        token: [
+            {
+                token: {
+                    type: String,
+                    required: true,
+                },
+            }
+        ]
 
     })
 );
