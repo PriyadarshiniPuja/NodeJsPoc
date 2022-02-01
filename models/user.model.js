@@ -14,11 +14,12 @@ const User = mongoose.model(
         dob: {
             type: Date,
             required: true,
-            unique: true
+
         },
         email: {
             type: String,
             required: true,
+
         },
         mobile: {
             type: Number,
@@ -32,7 +33,6 @@ const User = mongoose.model(
             {
                 token: {
                     type: String,
-                    required: true,
                 },
             }
         ]

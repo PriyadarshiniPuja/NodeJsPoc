@@ -7,7 +7,15 @@ const User = db.user;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
+
+    const user = await User.findOne({
+        email: req.body.email,
+    });
+    if (user) {
+        res.status(400).send({ message: 'User already exist' });
+        return;
+    }
     const newUser = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -15,27 +23,17 @@ exports.signup = (req, res) => {
         mobile: req.body.mobile,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
+        token: {}
     });
-    User.findOne({
-        email: req.body.email,
-    }).exec((err, user) => {
+
+    newUser.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
-        if (user) {
-            res.status(400).send({ message: 'User already exist' });
-            return;
-        }
-
-        newUser.save((err, user) => {
-            if (err) {
-                res.status(500).send({ message: err });
-                return;
-            }
-            res.send({ message: "User registered successfully!" });
-        });
+        res.send({ message: "User registered successfully!" });
     });
+
 
 };
 
