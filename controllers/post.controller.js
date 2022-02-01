@@ -1,7 +1,5 @@
 const db = require("../models");
-const path = require('path')
 const Post = db.post;
-const Comment = db.comment;
 
 exports.createPost = (req, res) => {
     const newPost = new Post({
@@ -70,7 +68,6 @@ exports.updatePostDetail = async (req, res) => {
 
 
 exports.deletePost = async (req, res) => {
-
     try {
         Post.findById(req.params['id']).exec((err, post) => {
             if (err) {

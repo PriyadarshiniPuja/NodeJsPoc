@@ -1,11 +1,10 @@
 
 const db = require("../models");
 const config = require("../config/auth.config");
-const User = db.user;
-
-
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const User = db.user;
+
 
 exports.signup = async (req, res) => {
 

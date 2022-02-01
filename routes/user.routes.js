@@ -1,7 +1,7 @@
 
 const controller = require("../controllers/user.controller");
 const { verifyToken } = require("../middlewares/authJwt");
-const { userValidationRules, loginValidationRules, validate } = require('../validators/user-validators')
+const { userValidationRules, loginValidationRules, validate } = require('../validators/user-validators');
 
 module.exports = function (app) {
 
