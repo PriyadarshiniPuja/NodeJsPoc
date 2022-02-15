@@ -3,7 +3,86 @@ const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const User = db.user;
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     NewUser:
+ *       type: object
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: firstName.
+ *           example: Priydarshini
+ *         lastName:
+ *           type: string
+ *           description: The lastName.
+ *           example:  Puja
+ *         dob:
+ *           type: date
+ *           description: DOB .
+ *           example:  1994-12-28T18:30:00.000+00:00
+ *         email:
+ *            type: string
+ *            description: email .
+ *            example:  test@gmail.com
+ *         mobile:
+ *           type: string
+ *           description: mobile
+ *           example:  2212192121
+ *         password:
+ *           type: string
+ *           description: password
+ *           example:  221212121
+ *     User:
+ *       type: object
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: firstName.
+ *           example: Priydarshini
+ *         lastName:
+ *           type: string
+ *           description: The lastName.
+ *           example:  Puja
+ *         dob:
+ *           type: date
+ *           description: DOB .
+ *           example:  1994-12-28T18:30:00.000+00:00
+ *         email:
+ *            type: string
+ *            description: email .
+ *            example: test@gmail.com
+ *         mobile:
+ *           type: string
+ *           description: mobile
+ *           example:  2212121821
+ *         id:
+ *           type: integer
+ *           description: id
+ *           example: 62020a1e8076597bac35e05a,
+ *         token:
+ *            type: string
+ *            description: token
+ *            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDIwYTFlODA3NjU5N2JhYzM1ZTA1YSIsImlhdCI6MTY0NDMzNDA0NywiZXhwIjoxNjQ0NDIwNDQ3fQ._RuBs6hiWe0JPIPujjnlLiS-2SLwJ50I3jKNKYVlyXA
+ */
 
+/**
+ * @swagger
+ * /api/v1/user/signup:
+ *  post:
+ *      summary: Api to register user
+ *      description: Take  firstName , lastName ,email , password , dob and mobile etc
+ *      requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUser'
+ *      responses:
+ *         201:
+ *              description: User registered successfully
+ */
 exports.signup = async (req, res) => {
   const user = await User.findOne({
     email: req.body.email,
@@ -30,6 +109,35 @@ exports.signup = async (req, res) => {
     res.send({ message: "User registered successfully!" });
   });
 };
+/**
+ * @swagger
+ * /api/v1/user/login:
+ *  post:
+ *      summary: Api to login user
+ *      description: Take email and password etc
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                email:
+ *                  type: string
+ *                  description: email
+ *                  example: test@gmail.com
+ *                password:
+ *                  type: string
+ *                  description: password.
+ *                  example:  221212121,
+ *      responses:
+ *         200:
+ *             description: User loggedin successfully
+ *             content:
+ *               application/json:
+ *                 schema:
+ *                   $ref: '#/components/schemas/User'
+ */
 
 exports.signin = (req, res) => {
   User.findOne({
@@ -92,11 +200,9 @@ exports.logoutAllDevices = async (req, res) => {
     if (user) {
       user.token = [];
       await user.save();
-      return res
-        .status(200)
-        .send({
-          message: "You've been signed out from all devices successfully!",
-        });
+      return res.status(200).send({
+        message: "You've been signed out from all devices successfully!",
+      });
     } else {
       throw new Error("User not found");
     }
@@ -106,6 +212,20 @@ exports.logoutAllDevices = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/v1/user/{id}:
+ *   get:
+ *     summary: Retrieve particular user detail
+ *     description: Can be used to populate a details of  user when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ */
 exports.getUserDetails = async (req, res) => {
   const user = await User.findById(req.userId);
   if (user) {
@@ -123,7 +243,20 @@ exports.getUserDetails = async (req, res) => {
     return res.status(404).send({ message: "User Not found." });
   }
 };
-
+/**
+ * @swagger
+ * /api/v1/user/{id}:
+ *   get:
+ *     summary: Retrieve particular user detail
+ *     description: Can be used to populate a details of  user when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ */
 exports.updateUserDetails = async (req, res) => {
   const user = await User.findById(req.userId);
   user.firstName = req.body.firstName;

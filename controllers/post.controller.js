@@ -1,7 +1,46 @@
 const db = require("../models");
 const User = require("../models/user.model");
 const Post = db.post;
-
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: title.
+ *           example: New Post
+ *         description:
+ *           type: string
+ *           description: description.
+ *           example:  awesome post
+ *         author:
+ *           type: integer
+ *           description: author id .
+ *           example:  97878708
+ *         image:
+ *            type: string
+ *            description: image url .
+ *            example:  //ssl.gstatic.com/accounts/ui/avatar_2x.png
+ */
+/**
+ * @swagger
+ * /api/v1/post:
+ *  post:
+ *      summary: Api to create post
+ *      description: Post will be created
+ *      requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *       responses:
+ *         201:
+ *              description: Post Created successfully
+ */
 exports.createPost = (req, res) => {
   const newPost = new Post({
     title: req.body.title,
@@ -33,6 +72,14 @@ exports.createPost = (req, res) => {
   });
 };
 
+/**
+ * @swagger
+ * paths:
+ *   /api/v1/posts:
+ *     get:
+ *       summary: Retrieve a list of posts
+ *       description: Retrieve a list of posts. Can be used to populate a list of  posts when prototyping or testing an API.
+ */
 exports.getAllPosts = (req, res) => {
   Post.find({}).exec((err, posts) => {
     if (err) {
@@ -44,21 +91,54 @@ exports.getAllPosts = (req, res) => {
     }
   });
 };
-
+/**
+ * @swagger
+ * /api/v1/post/{postId}:
+ *   get:
+ *     summary: Retrieve particular post detail
+ *     description: Can be used to populate a details of  post when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         description: Numeric ID of the post to retrieve.
+ *         schema:
+ *           type: string
+ */
 exports.getPostDetail = async (req, res) => {
   const post = await Post.findById(req.params["id"]);
   const user = await User.findById(post.author);
   let updated = { createdBy: user.firstName + " " + user.lastName };
   Object.assign(post._doc, updated);
-
-  console.log("post", post);
   if (post) {
     res.json(post);
   } else {
     return res.status(404).send({ message: "Post Not found." });
   }
 };
-
+/**
+ * @swagger
+ * /api/v1/post/{postId}:
+ *   patch:
+ *     summary: Update particular post detail
+ *     description: Can be used to update details of  post when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         description: Numeric ID of the post to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *         201:
+ *              description: Post Updated successfully
+ */
 exports.updatePostDetail = async (req, res) => {
   const post = await Post.findById(req.params["id"]);
   post.title = req.body.title;
@@ -70,7 +150,23 @@ exports.updatePostDetail = async (req, res) => {
     return res.status(404).send({ message: "Post Not found." });
   }
 };
-
+/**
+ * @swagger
+ * /api/v1/post/{postId}:
+ *   delete:
+ *     summary: Delete particular post
+ *     description: Can be used to delete particular post when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         description: Numeric ID of the post to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *         201:
+ *              description: Post Updated successfully
+ */
 exports.deletePost = async (req, res) => {
   try {
     Post.findById(req.params["id"]).exec((err, post) => {

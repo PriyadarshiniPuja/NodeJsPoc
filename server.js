@@ -6,6 +6,49 @@ const dbConfig = require("./config/db.config");
 var logger = require("./utils/logger");
 const host = "localhost";
 
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "Express API for JSONPlaceholder",
+    version: "1.0.0",
+    description:
+      "This is a REST API application made with Express. It retrieves data from JSONPlaceholder.",
+    license: {
+      name: "Licensed Under MIT",
+      url: "https://spdx.org/licenses/MIT.html",
+    },
+    contact: {
+      name: "JSONPlaceholder",
+      url: "https://jsonplaceholder.typicode.com",
+    },
+  },
+  servers: [
+    {
+      url: "http://localhost:8080/",
+      description: "Development server",
+    },
+  ],
+  basePath: {
+    default: "/api/v1",
+  },
+};
+
+const options = {
+  swaggerDefinition,
+
+  // Paths to files containing OpenAPI definitions
+  apis: [
+    `${__dirname}/server.js`,
+    "./controllers/user.controller.js",
+    "./controllers/post.controller.js",
+  ],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
 const app = express();
 
 var corsOptions = {
@@ -29,7 +72,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the application." });
   logger.info("Server Sent A Hello World!");
 });
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 require("./routes/user.routes")(app);
 require("./routes/post.routes")(app);
 require("./routes/comment.routes")(app);
@@ -51,6 +94,7 @@ app.use((err, req, res, next) => {
     } - ${req.method} - ${req.ip}`
   );
 });
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
