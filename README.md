@@ -17,3 +17,8 @@ Navigate to http://localhost:8080
 
 Built With
 Node.js
+
+
+Swagger
+You can access the api docs using this end point.
+http://localhost:8080/api-docs/#/
