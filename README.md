@@ -8,11 +8,13 @@ $ mkdir demo && cd demo
 $ git clone https://github.com/PriyadarshiniPuja/NodeJsPoc
 $ cd NodeJsPoc
 $ npm install
-Run on local
 
+Run on local
 $ npm run dev
 Navigate to http://localhost:8080
-
+or
+$nodemon server
+Navigate to http://localhost:8080
 
 
 Built With
