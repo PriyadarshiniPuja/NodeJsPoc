@@ -13,7 +13,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Express API for JSONPlaceholder",
+    title: "Express API",
     version: "1.0.0",
     description: "This is a REST API application made with Express.",
   },

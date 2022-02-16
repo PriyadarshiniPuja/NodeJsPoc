@@ -139,16 +139,10 @@ exports.getPostDetail = async (req, res) => {
  *         201:
  *              description: Post Updated successfully
  */
-exports.updatePostDetail = async (req, res) => {
-  const post = await Post.findById(req.params["id"]);
-  post.title = req.body.title;
-  post.description = req.body.description;
-  await post.save();
-  if (post) {
-    res.json(post);
-  } else {
-    return res.status(404).send({ message: "Post Not found." });
-  }
+exports.updatePostDetail = (req, res) => {
+  Post.findByIdAndUpdate(req.params.id, req.body)
+    .then((post) => res.json(post))
+    .catch((err) => res.status(404).send({ message: "Post Not found." }));
 };
 /**
  * @swagger

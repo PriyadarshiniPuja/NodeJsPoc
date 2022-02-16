@@ -276,3 +276,24 @@ info: Feb-15-2022 13:20:09: 	Server started and running on http://localhost:8080
 info: Feb-15-2022 13:20:30: 	Server started and running on http://localhost:8080
 info: Feb-15-2022 13:20:35: 	Server started and running on http://localhost:8080
 info: Feb-15-2022 13:20:50: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:18:39: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:18:45: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:18:55: 	Server started and running on http://localhost:8080
+error: Feb-15-2022 17:23:09: 	400 || Not Found - /api/v1/user/ - POST - ::1
+info: Feb-15-2022 17:25:47: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:27:09: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:31:32: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:31:43: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:31:50: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:32:52: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:33:30: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:34:04: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:35:00: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:35:39: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:35:44: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:39:39: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:39:42: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:39:48: 	Server started and running on http://localhost:8080
+info: Feb-15-2022 17:39:51: 	Server started and running on http://localhost:8080
+info: Feb-16-2022 00:15:49: 	Server started and running on http://localhost:8080
+info: Feb-16-2022 10:42:20: 	Server started and running on http://localhost:8080

@@ -23,10 +23,16 @@ const Post = mongoose.model(
     createdAt: {
       type: Date,
       required: true,
+      default: Date.now,
     },
     updatedAt: {
       type: Date,
       required: true,
+      default: Date.now,
+    },
+    likeCount: {
+      type: Number,
+      default: 0,
     },
     comments: {
       type: [Comment.schema],

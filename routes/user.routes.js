@@ -2,6 +2,7 @@ const controller = require("../controllers/user.controller");
 const { verifyToken } = require("../middlewares/authJwt");
 const {
   userValidationRules,
+  updateUserValidationRules,
   loginValidationRules,
   validate,
 } = require("../validators/user-validators");
@@ -29,7 +30,7 @@ module.exports = function (app) {
   app.patch(
     "/api/v1/user/:id",
     verifyToken,
-    userValidationRules(),
+    updateUserValidationRules(),
     validate,
     controller.updateUserDetails
   );
