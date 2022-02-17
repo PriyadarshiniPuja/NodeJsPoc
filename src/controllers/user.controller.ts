@@ -1,5 +1,6 @@
-const db = require("../models");
-const config = require("../config/auth.config");
+import db from "../models";
+import {Request,Response} from 'express';
+import {config} from "../config/auth.config";
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const User = db.user;
@@ -83,7 +84,7 @@ const User = db.user;
  *         201:
  *              description: User registered successfully
  */
-exports.signup = async (req, res) => {
+const signup = async (req:Request, res:Response) => {
   const user = await User.findOne({
     email: req.body.email,
   });
@@ -139,7 +140,7 @@ exports.signup = async (req, res) => {
  *                   $ref: '#/components/schemas/User'
  */
 
-exports.signin = (req, res) => {
+const signin = (req:Request, res:Response) => {
   User.findOne({
     email: req.body.email,
   }).exec((err, user) => {
@@ -174,7 +175,7 @@ exports.signin = (req, res) => {
   });
 };
 
-exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (user) {
@@ -194,7 +195,7 @@ exports.logout = async (req, res) => {
   }
 };
 
-exports.logoutAllDevices = async (req, res) => {
+const logoutAllDevices = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (user) {
@@ -226,7 +227,7 @@ exports.logoutAllDevices = async (req, res) => {
  *         schema:
  *           type: string
  */
-exports.getUserDetails = async (req, res) => {
+const getUserDetails = async (req, res) => {
   const user = await User.findById(req.userId);
   if (user) {
     res.json({
@@ -257,8 +258,10 @@ exports.getUserDetails = async (req, res) => {
  *         schema:
  *           type: string
  */
-exports.updateUserDetails = async (req, res) => {
+const updateUserDetails =  (req:Request, res:Response) => {
   User.findByIdAndUpdate(req.params.id, req.body)
     .then((user) => res.json(user))
     .catch((err) => res.status(404).send({ message: "User Not found." }));
 };
+
+export {signup,signin,logout,logoutAllDevices,getUserDetails,updateUserDetails};

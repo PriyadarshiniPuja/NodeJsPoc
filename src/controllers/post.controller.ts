@@ -1,5 +1,5 @@
-const db = require("../models");
-const User = require("../models/user.model");
+import db from "../models";
+import User from "../models/user.model";
 const Post = db.post;
 /**
  * @swagger
@@ -41,7 +41,7 @@ const Post = db.post;
  *         201:
  *              description: Post Created successfully
  */
-exports.createPost = (req, res) => {
+const createPost = (req, res) => {
   const newPost = new Post({
     title: req.body.title,
     description: req.body.description,
@@ -49,6 +49,7 @@ exports.createPost = (req, res) => {
     author: req.body.author,
     createdAt: Date.now(),
     updatedAt: Date.now(),
+    likeCount: 0,
   });
   Post.findOne({
     title: req.body.title,
@@ -80,7 +81,7 @@ exports.createPost = (req, res) => {
  *       summary: Retrieve a list of posts
  *       description: Retrieve a list of posts. Can be used to populate a list of  posts when prototyping or testing an API.
  */
-exports.getAllPosts = (req, res) => {
+const getAllPosts = (req, res) => {
   Post.find({}).exec((err, posts) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -105,7 +106,7 @@ exports.getAllPosts = (req, res) => {
  *         schema:
  *           type: string
  */
-exports.getPostDetail = async (req, res) => {
+const getPostDetail = async (req, res) => {
   const post = await Post.findById(req.params["id"]);
   const user = await User.findById(post.author);
   let updated = { createdBy: user.firstName + " " + user.lastName };
@@ -139,7 +140,7 @@ exports.getPostDetail = async (req, res) => {
  *         201:
  *              description: Post Updated successfully
  */
-exports.updatePostDetail = (req, res) => {
+const updatePostDetail = (req, res) => {
   Post.findByIdAndUpdate(req.params.id, req.body)
     .then((post) => res.json(post))
     .catch((err) => res.status(404).send({ message: "Post Not found." }));
@@ -161,7 +162,7 @@ exports.updatePostDetail = (req, res) => {
  *         201:
  *              description: Post Updated successfully
  */
-exports.deletePost = async (req, res) => {
+const deletePost = async (req, res) => {
   try {
     Post.findById(req.params["id"]).exec((err, post) => {
       if (err) {
@@ -179,3 +180,6 @@ exports.deletePost = async (req, res) => {
     return res.status(404).send({ message: "Post Not found." });
   }
 };
+export {createPost,getAllPosts,getPostDetail,updatePostDetail,
+  deletePost
+}

@@ -1,10 +1,10 @@
-const db = require("../models");
-const path = require("path");
-const User = require("../models/user.model");
+import db from "../models";
+import path from "path";
+import User from "../models/user.model";
 const Comment = db.comment;
 const Post = db.post;
 
-exports.createNewComment = async (req, res) => {
+const createNewComment = async (req, res) => {
   const user = await User.findById(req.body.author);
   const newComment = new Comment({
     description: req.body.description,
@@ -34,7 +34,7 @@ exports.createNewComment = async (req, res) => {
   });
 };
 
-exports.getAllCommentOnPost = (req, res) => {
+const getAllCommentOnPost = (req, res) => {
   Post.findById(req.body.postId).exec((err, post) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -47,7 +47,7 @@ exports.getAllCommentOnPost = (req, res) => {
   });
 };
 
-exports.getCommentDetails = (req, res) => {
+const getCommentDetails = (req, res) => {
   Post.findById(req.body.postId).exec((err, post) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -71,7 +71,7 @@ exports.getCommentDetails = (req, res) => {
     return res.status(404).send({ message: "Post Not found." });
   });
 };
-exports.updateCommentDetails = (req, res) => {
+const updateCommentDetails = (req, res) => {
   Post.findById(req.body.postId).exec(async (err, post) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -98,7 +98,7 @@ exports.updateCommentDetails = (req, res) => {
   });
 };
 
-exports.deleteComment = (req, res) => {
+const deleteComment = (req, res) => {
   Post.findById(req.params["postId"]).exec(async (err, post) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -127,4 +127,7 @@ exports.deleteComment = (req, res) => {
     }
     return res.status(404).send({ message: "Post Not found." });
   });
+};
+export {createNewComment,getAllCommentOnPost,getCommentDetails,updateCommentDetails,
+  deleteComment
 };

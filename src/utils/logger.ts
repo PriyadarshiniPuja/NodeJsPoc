@@ -1,6 +1,6 @@
-const { createLogger, format, transports } = require("winston");
+import { createLogger, format, transports } from "winston";
 
-module.exports = createLogger({
+const logger = createLogger({
   transports: new transports.File({
     filename: "logs/server.log",
     format: format.combine(
@@ -12,3 +12,5 @@ module.exports = createLogger({
     ),
   }),
 });
+
+export default logger;
