@@ -175,12 +175,12 @@ const signin = (req:Request, res:Response) => {
   });
 };
 
-const logout = async (req, res) => {
+const logout = async (req:Request, res:Response) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.params.userId);
     if (user) {
       const requestToken = req.headers.token;
-      const existingToken = user.token.find((e) => e.token === requestToken);
+      const existingToken = user.token.find((e: { token: string | string[]; }) => e.token === requestToken);
       await user.token.remove(existingToken._id);
       await user.save();
       return res
@@ -195,9 +195,9 @@ const logout = async (req, res) => {
   }
 };
 
-const logoutAllDevices = async (req, res) => {
+const logoutAllDevices = async (req:Request, res:Response) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.params.userId);
     if (user) {
       user.token = [];
       await user.save();
